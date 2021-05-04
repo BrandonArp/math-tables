@@ -10,13 +10,14 @@ function loaded() {
 
 function submitForm(e) {
   e.preventDefault();
-  console.log("Submit");
   const seed = document.getElementById("seed").value;
-  console.log("Seed: ", seed);
-  const md5 = MD5(seed)
-  console.log("MD5: ", md5.toString());
-
-  let rng = seedrandom(md5);
+  let rng;
+  if (seed != "") {
+    const md5 = MD5(seed)
+    rng = seedrandom(md5);
+  } else {
+    rng = seedrandom();
+  }
 
   let width = 8.5;
   let height = 11;
