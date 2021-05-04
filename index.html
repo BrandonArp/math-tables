@@ -27,9 +27,29 @@
   <!-- Add your site or application content here -->
   <div>
     <form id="form">
-      <label for="seed">Seed</label>
-      <input type="text" id="seed" placeholder="Seed" value="">
-      <button id="generate">Generate</button>
+      <div>
+        <label for="seed">Seed</label>
+        <input type="text" id="seed" value="">
+      </div>
+      <div>
+        <label for="seed">Numerator Minimum</label>
+        <input type="text" id="num_min" value="3">
+      </div>
+      <div>
+        <label for="seed">Numerator Maximum</label>
+        <input type="text" id="num_max" value="9">
+      </div>
+      <div>
+        <label for="seed">Denominator Minimum</label>
+        <input type="text" id="den_min" value="5">
+      </div>
+      <div>
+        <label for="seed">Denominator Maximum</label>
+        <input type="text" id="den_max" value="9">
+      </div>
+      <div>
+        <button id="generate">Generate</button>
+      </div>
     </form>
   </div>
   <script src="js/vendor/modernizr-3.11.2.min.js"></script>

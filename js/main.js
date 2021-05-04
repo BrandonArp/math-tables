@@ -3,7 +3,6 @@ import { jsPDF } from "jspdf";
 const seedrandom = require('seedrandom');
 
 function loaded() {
-  console.log("Loaded");
   let form = document.getElementById("form");
   form.addEventListener("submit", submitForm)
 }
@@ -34,33 +33,54 @@ function submitForm(e) {
 
   let xFactor = (width - (2 * margin)) / (columns - 1);
   let yFactor = (height - (2 * margin)) / (rows - 1);
-  let max = 10;
+  const num_min = document.getElementById("num_min").value;
+  const num_max = document.getElementById("num_max").value;
+  const denom_min = document.getElementById("den_min").value;
+  const denom_max = document.getElementById("den_max").value;
 
   doc.setFontSize(24);
 
+  function encode(num, den) {
+    return [num, den];
+  }
+
+  function decode(val) {
+    return [val[0], val[1]];
+  }
+
   // Generate possibles field
   let numbers = [];
-  for (let i = 0; i < (max + 1) * (max); i++) {
-    numbers.push(i);
+  for (let i = num_min; i <= num_max; i++) {
+    for (let j = denom_min; j <=  denom_max; j++) {
+      numbers.push(encode(i, j));
+    }
   }
 
-  // Shuffle the field
-  for (let i = 0; i < numbers.length; i++) {
-    let swap = Math.floor(rng() * (numbers.length - i) + i);
-    let tmp = numbers[swap];
-    numbers[swap] = numbers[i];
-    numbers[i] = tmp;
+  function shuffle(numbers) {
+    // Shuffle the field
+    for (let i = 0; i < numbers.length; i++) {
+      let swap = Math.floor(rng() * (numbers.length - i) + i);
+      let tmp = numbers[swap];
+      numbers[swap] = numbers[i];
+      numbers[i] = tmp;
+    }
   }
-  console.log("Randomized:", numbers);
+  shuffle(numbers);
   let index = 0;
 
-  for (let i = 0; i < columns; i++) {
-    for (let j = 0; j < rows; j++) {
+  for (let j = 0; j < rows; j++) {
+    for (let i = 0; i < columns; i++) {
+      if (index >= numbers.length) {
+        shuffle(numbers);
+        index = 0;
+      }
+
       let num = numbers[index];
       index++;
 
-      let numerator = Math.floor(num / max);
-      let denominator = num % max;
+      let decoded = decode(num);
+      let numerator = decoded[0];
+      let denominator = decoded[1];
 
       let num_text = numerator.toString();
       let den_text = "x " + denominator.toString();
